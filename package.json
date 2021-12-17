@@ -19,5 +19,16 @@
     "googleapis": "^92.0.0",
     "moment": "^2.24.0",
     "request": "^2.88.0"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makedonsky94/review-bot.git"
+  },
+  "author": "Alexandr Nevyantsev",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/makedonsky94/review-bot/issues"
+  },
+  "homepage": "https://github.com/makedonsky94/review-bot#readme"
 }
