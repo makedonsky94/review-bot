@@ -30,7 +30,8 @@ export default class PlayStoreWatcher {
                     setTimeout(resolve, this.config.interval * 1000);
                 });
             })
-            .then(() => this.startWatch());
+            .then(() => this.startWatch())
+            .catch(() => this.startWatch());
     }
 
     watchTick() {
