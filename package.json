@@ -8,6 +8,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node bin/review-bot.js",
     "testSlack": "node bin/test-slack.js",
+    "testGoogle": "node bin/test-google.js",
     "tsc": "tsc"
   },
   "bin": {
