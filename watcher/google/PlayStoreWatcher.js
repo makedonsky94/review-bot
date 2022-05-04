@@ -66,7 +66,7 @@ export default class PlayStoreWatcher {
                     this.reviewsStore.put(item);
                     Slack.postMessage(item, this.config);
                 })
-            })
+            });
     }
 
     fetchAppInformation() {
@@ -104,7 +104,7 @@ export default class PlayStoreWatcher {
         const logger = this.logger;
         const config = this.config;
 
-        return new Promise((resolve) => {
+        return new Promise((resolve, reject) => {
             const scopes = ['https://www.googleapis.com/auth/androidpublisher'];
 
             //read publisher json key
@@ -112,7 +112,9 @@ export default class PlayStoreWatcher {
             try {
                 publisherJson = JSON.parse(fs.readFileSync(config.publisherKey, 'utf8'));
             } catch (err) {
-                logger.error(`Error during the fetch of publisher key: ${err}`);
+                const errorMessage = `Error during the fetch of publisher key: ${err}`;
+                logger.error(errorMessage);
+                reject(new Error(errorMessage));
                 return;
             }
     
@@ -120,9 +122,11 @@ export default class PlayStoreWatcher {
                 const jwt = new googleApi.auth.JWT(publisherJson.client_id, null, publisherJson.private_key, scopes, null);
                 resolve(jwt);
             } catch (err) {
-                logger.error(`Error during the initialization of JWT: ${err}`);
+                const errorMessage = `Error during the initialization of JWT: ${err}`;
+                logger.error(errorMessage);
+                reject(new Error(errorMessage));
             }
-        })
+        });
     }
 
     authJwt(jwt) {
