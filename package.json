@@ -1,6 +1,6 @@
 {
   "name": "@makedonsky94/review-bot",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Google Play and App Store reviews posted to Slack",
   "main": "index.js",
   "type": "module",
