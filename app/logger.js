@@ -1,18 +1,35 @@
+import fs from 'fs';
+
 export default class Logger {
     constructor(verbose) {
         this.verbose = verbose;
+
+        this.logFile = "./logs/log" + Math.floor(Math.random() * 1000000);
+
+        if (!fs.existsSync("./logs")) {
+            fs.mkdirSync("./logs");
+        }
+
+        if (!fs.existsSync(this.logFile)) {
+            fs.writeFileSync(this.logFile, "");
+        }
     }
 
     log(message) {
-        if (this.verbose) console.log(this.getDateTime(), "", message);
+        if (this.verbose) {
+            console.log(this.getDateTime(), "", message);
+            this._logToFile(this.getDateTime() + "          " + message);
+        }
     }
 
     success(message) {
         console.log(this.getDateTime(), "\x1b[32m", message, "\x1b[0m");
+        this._logToFile(this.getDateTime() + " SUCCESS: " + message);
     }
 
     error(message) {
-        console.log(this.getDateTime(), "\x1b[31m", message, "\x1b[0m");
+        console.error(this.getDateTime(), "\x1b[31m", message, "\x1b[0m");
+        this._logToFile(this.getDateTime() + " ERROR:   " + message);
     }
 
     getDateTime() {
@@ -25,5 +42,9 @@ export default class Logger {
 
     convertToStringWithLeadingZero(number) {
         return number.toString().padStart(2, "0");
+    }
+
+    _logToFile(message) {
+        fs.appendFileSync(this.logFile, message + "\n");
     }
 }
