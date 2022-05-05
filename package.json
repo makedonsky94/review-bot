@@ -1,6 +1,6 @@
 {
   "name": "@makedonsky94/review-bot",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Google Play and App Store reviews posted to Slack",
   "main": "index.js",
   "type": "module",
@@ -12,7 +12,8 @@
     "tsc": "tsc"
   },
   "bin": {
-    "reviewme": "bin/review-bot.js"
+    "reviewme": "bin/review-bot.js",
+    "review-bot": "bin/review-bot.js"
   },
   "dependencies": {
     "android-versions": "^1.7.0",
