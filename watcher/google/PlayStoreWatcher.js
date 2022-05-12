@@ -152,27 +152,33 @@ export default class PlayStoreWatcher {
             maxResults: 1000
         };
         const self = this;
-        return new Promise((resolve) => {
-            googleApi.androidpublisher({version: 'v3'}).reviews.list(params, function (err, response) {
-                if (err) {
-                    logger.error(`[RESPONSE] type: Fail; errorMessage: ${err}`);
-                    resolve([]);
-                    return;
-                }
-    
+        return new Promise((resolve, reject) => {
+            const timeout = 10000;
+            const timer = setTimeout(() => {
+                logger.error(`fetchReviewsWithJwt: Promise timed out after ${timeout} ms`);
+                reject(new Error(`fetchReviewsWithJwt: Promise timed out after ${timeout} ms`));
+            }, timeout);
+
+            googleApi.androidpublisher({version: 'v3'}).reviews.list(params).then((response) => {
+                clearTimeout(timer);
+
                 if (!response.data.reviews) {
                     logger.log("[INFO] Received 0 reviews from Google Play");
                     resolve([]);
-                    return;
+                } else {
+                    logger.log(`[INFO] Received ${response.data.reviews.length} reviews from Google Play`);
+                    const reviews = self.parseReviews(response.data.reviews);
+                    resolve(reviews);
                 }
-                logger.log(`[INFO] Received ${response.data.reviews.length} reviews from Google Play`);
-    
-
-                const reviews = self.parseReviews(response.data.reviews);
-                resolve(reviews);
-            })
+            }, (err) => {
+                clearTimeout(timer);
+                logger.error(`[RESPONSE] type: Fail; errorMessage: ${err}`);
+                resolve([]);
+            });
         })
     }
+
+
 
     parseReviews(reviews) {
         const config = this.config;
