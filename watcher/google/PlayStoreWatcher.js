@@ -17,7 +17,7 @@ export default class PlayStoreWatcher {
         }
         this.config = config;
         this.logger = new Logger(true, config.log);
-        this.reviewsStore = new ReviewsStore("./cache/android.json", config.log);
+        this.reviewsStore = new ReviewsStore("./cache/android.json", this.logger);
     }
 
     startWatch() {

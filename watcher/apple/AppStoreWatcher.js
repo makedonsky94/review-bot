@@ -15,7 +15,7 @@ export default class AppStoreWatcher {
         }
         this.config = config;
         this.logger = new Logger(true, config.log);
-        this.reviewsStore = new ReviewsStore("./cache/ios.json", config.log);
+        this.reviewsStore = new ReviewsStore("./cache/ios.json", this.logger);
     }
 
     startWatch() {
