@@ -14,7 +14,7 @@ export default class ReviewsStore {
             fs.writeFileSync(this.cacheFile, "[]");
         }
         
-        this.cache = JSON.parse(fs.readFileSync(this.cacheFile));
+        this.cache = this.readCache();
         this.isInitialized = false;
         this.logger = logger;
     }
@@ -31,6 +31,7 @@ export default class ReviewsStore {
     }
 
     leftOuterJoin(leftPart) {
+        this.cache = this.readCache();
         const rightPart = this.cache;
         return leftPart.filter((leftItem) => {
             var itemIndex = rightPart.findIndex((rightItemId) => leftItem.id == rightItemId);
@@ -39,6 +40,7 @@ export default class ReviewsStore {
     }
 
     put(review) {
+        this.cache = this.readCache();
         this.cache.push(review.id);
         fs.writeFileSync(this.cacheFile, JSON.stringify(this.cache));
     }
@@ -50,5 +52,9 @@ export default class ReviewsStore {
             }
         }
         return false;
+    }
+
+    readCache() {
+        return JSON.parse(fs.readFileSync(this.cacheFile));
     }
 }

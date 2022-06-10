@@ -20,9 +20,9 @@
     "commander": "^8.3.0",
     "googleapis": "^92.0.0",
     "moment": "^2.24.0",
+    "proper-lockfile": "^4.1.2",
     "request": "^2.88.0"
   },
-  "devDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/makedonsky94/review-bot.git"
