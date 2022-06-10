@@ -3,7 +3,7 @@ import fs from 'fs';
 import * as Helper from './helper.js';
 
 export default class ReviewsStore {
-    constructor(file) {
+    constructor(file, logFolder) {
         this.cacheFile = file;
 
         if (!fs.existsSync("./cache")) {
@@ -16,7 +16,7 @@ export default class ReviewsStore {
         
         this.cache = JSON.parse(fs.readFileSync(this.cacheFile));
         this.isInitialized = false;
-        this.logger = new Logger();
+        this.logger = new Logger(true, logFolder);
     }
 
     init(reviews) {

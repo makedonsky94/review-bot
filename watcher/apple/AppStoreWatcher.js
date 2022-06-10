@@ -14,8 +14,8 @@ export default class AppStoreWatcher {
             config.interval = 1000;
         }
         this.config = config;
-        this.logger = new Logger(true);
-        this.reviewsStore = new ReviewsStore("./cache/ios.json");
+        this.logger = new Logger(true, config.log);
+        this.reviewsStore = new ReviewsStore("./cache/ios.json", config.log);
     }
 
     startWatch() {

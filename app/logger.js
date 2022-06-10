@@ -1,14 +1,23 @@
 import fs from 'fs';
 
 export default class Logger {
-    constructor(verbose) {
+    constructor(verbose, logFolder) {
         this.verbose = verbose;
 
-        this.logFile = "./logs/log" + Math.floor(Math.random() * 1000000);
+        const postfix = Math.floor(Math.random() * 1000000);
+        var folder = "";
 
-        if (!fs.existsSync("./logs")) {
-            fs.mkdirSync("./logs");
+        if (logFolder) {
+            folder = logFolder.trim().replace(new RegExp("[/]$"), "");
+        } else {
+            folder = "./logs";
         }
+
+        if (!fs.existsSync(folder)) {
+            fs.mkdirSync(folder);
+        }
+
+        this.logFile = folder + "/log" + postfix;
 
         if (!fs.existsSync(this.logFile)) {
             fs.writeFileSync(this.logFile, "");
