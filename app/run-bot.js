@@ -7,6 +7,7 @@ const REVIEWS_STORES = {
 };
 
 export function runBot(config) {
+    console.log(config);
     if (!config.store) {
         // Determine from which store reviews are downloaded
         config.store = (config.appId.indexOf("\.") > -1) ? REVIEWS_STORES.GOOGLE_PLAY : REVIEWS_STORES.APP_STORE;

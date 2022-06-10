@@ -8,7 +8,6 @@ export function start(config) {
         runBot({
             slackHook: config.slackHook,
             verbose: config.verbose,
-            dryRun: config.dryRun,
             interval: config.interval,
             botIcon: app.botIcon || config.botIcon,
             showAppIcon: app.showAppIcon || config.showAppIcon,
@@ -16,7 +15,9 @@ export function start(config) {
             publisherKey: app.publisherKey,
             appId: app.appId,
             appName: app.appName,
-            regions: app.regions
+            regions: app.regions,
+            log: config.log,
+            store: config.store
         });
     }
 }
