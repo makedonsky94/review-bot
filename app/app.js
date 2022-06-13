@@ -16,8 +16,9 @@ export function start(config) {
             appId: app.appId,
             appName: app.appName,
             regions: app.regions,
-            log: config.log,
-            store: config.store
+            log: config.log || "./logs/",
+            store: config.store,
+            cache: config.cache
         });
     }
 }

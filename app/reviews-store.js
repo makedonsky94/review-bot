@@ -1,13 +1,16 @@
 import Logger from "./logger.js";
 import fs from 'fs';
+import path from 'path';
 import * as Helper from './helper.js';
 
 export default class ReviewsStore {
     constructor(file, logger) {
         this.cacheFile = file;
 
-        if (!fs.existsSync("./cache")) {
-            fs.mkdirSync("./cache");
+        const directory = path.dirname(this.cacheFile);
+
+        if (!fs.existsSync(directory)) {
+            fs.mkdirSync(directory, { recursive: true });
         }
 
         if (!fs.existsSync(this.cacheFile)) {
@@ -27,7 +30,7 @@ export default class ReviewsStore {
         this.isInitialized = true;
         const newReviews = this.leftOuterJoin(reviews).map((item) => item.id);
         this.cache = Helper.mergeArrays(this.cache, newReviews);
-        fs.writeFileSync(this.cacheFile, JSON.stringify(this.cache));
+        this.writeCache(this.cache);
     }
 
     leftOuterJoin(leftPart) {
@@ -42,7 +45,7 @@ export default class ReviewsStore {
     put(review) {
         this.cache = this.readCache();
         this.cache.push(review.id);
-        fs.writeFileSync(this.cacheFile, JSON.stringify(this.cache));
+        this.writeCache(this.cache);
     }
 
     hasAny(reviews) {
@@ -56,5 +59,9 @@ export default class ReviewsStore {
 
     readCache() {
         return JSON.parse(fs.readFileSync(this.cacheFile));
+    }
+
+    writeCache(cache) {
+        fs.writeFileSync(this.cacheFile, JSON.stringify(cache));
     }
 }

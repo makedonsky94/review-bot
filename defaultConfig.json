@@ -3,6 +3,7 @@
     "verbose": true,
     "interval": 1000,
     "log": "./log/",
+    "cache": "./cache/android.json",
     "store": "google-play",
     "apps": [{
         "appId": "app_id",

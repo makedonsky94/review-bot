@@ -15,9 +15,10 @@ export default class PlayStoreWatcher {
         if (!config.interval) {
             config.interval = 1000;
         }
+
         this.config = config;
         this.logger = new Logger(true, config.log);
-        this.reviewsStore = new ReviewsStore("./cache/android.json", this.logger);
+        this.reviewsStore = new ReviewsStore(config.cache, this.logger);
     }
 
     startWatch() {
