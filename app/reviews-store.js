@@ -1,22 +1,25 @@
 import Logger from "./logger.js";
 import fs from 'fs';
+import path from 'path';
 import * as Helper from './helper.js';
 
 export default class ReviewsStore {
-    constructor(file, logFolder) {
+    constructor(file, logger) {
         this.cacheFile = file;
 
-        if (!fs.existsSync("./cache")) {
-            fs.mkdirSync("./cache");
+        const directory = path.dirname(this.cacheFile);
+
+        if (!fs.existsSync(directory)) {
+            fs.mkdirSync(directory, { recursive: true });
         }
 
         if (!fs.existsSync(this.cacheFile)) {
             fs.writeFileSync(this.cacheFile, "[]");
         }
         
-        this.cache = JSON.parse(fs.readFileSync(this.cacheFile));
+        this.cache = this.readCache();
         this.isInitialized = false;
-        this.logger = new Logger(true, logFolder);
+        this.logger = logger;
     }
 
     init(reviews) {
@@ -27,10 +30,11 @@ export default class ReviewsStore {
         this.isInitialized = true;
         const newReviews = this.leftOuterJoin(reviews).map((item) => item.id);
         this.cache = Helper.mergeArrays(this.cache, newReviews);
-        fs.writeFileSync(this.cacheFile, JSON.stringify(this.cache));
+        this.writeCache(this.cache);
     }
 
     leftOuterJoin(leftPart) {
+        this.cache = this.readCache();
         const rightPart = this.cache;
         return leftPart.filter((leftItem) => {
             var itemIndex = rightPart.findIndex((rightItemId) => leftItem.id == rightItemId);
@@ -39,8 +43,9 @@ export default class ReviewsStore {
     }
 
     put(review) {
+        this.cache = this.readCache();
         this.cache.push(review.id);
-        fs.writeFileSync(this.cacheFile, JSON.stringify(this.cache));
+        this.writeCache(this.cache);
     }
 
     hasAny(reviews) {
@@ -50,5 +55,13 @@ export default class ReviewsStore {
             }
         }
         return false;
+    }
+
+    readCache() {
+        return JSON.parse(fs.readFileSync(this.cacheFile));
+    }
+
+    writeCache(cache) {
+        fs.writeFileSync(this.cacheFile, JSON.stringify(cache));
     }
 }
